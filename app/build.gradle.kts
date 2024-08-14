@@ -62,6 +62,9 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation("com.github.push-protocol:push-kotlin-sdk:0.2.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
