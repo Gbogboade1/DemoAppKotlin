@@ -33,5 +33,5 @@ class PushRepository(private val executor: Executor) {
         }
     }
 
-    
+
 }
