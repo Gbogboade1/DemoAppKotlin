@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -32,7 +33,8 @@ fun LogInView() {
     val viewModel: PushViewModel = viewModel()
 
     val textState = remember { mutableStateOf("") }
-
+    val address = viewModel.userAddress.component1()
+    val isLoading = viewModel.isLoading.component1()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -90,6 +92,16 @@ fun LogInView() {
                         viewModel.loadPush()
                     }) {
                     Text(text = "Generate New Wallet")
+                }
+
+                Box(modifier = Modifier.height(16.dp))
+                if (isLoading == true){
+                    CircularProgressIndicator()
+                }
+                Box(modifier = Modifier.height(16.dp))
+
+                if(address != null) {
+                    Text(text = "Address: $address")
                 }
 
             }

@@ -18,24 +18,29 @@ class PushViewModel() : ViewModel() {
     val userAddress = mutableStateOf<String?>(null)
 
     val error = mutableStateOf<String?>(null)
+
+    val isLoading = mutableStateOf<Boolean?>(false)
+
     fun loadPush() {
         val (newAddress, signer) = getNewSinger()
         userAddress.value = newAddress
-
+        isLoading.value = true
         pushRepository.onInitializePush(signer) { result ->
             when (result) {
                 is Result.Success -> {
                     pushUser.value = result.data
                     error.value = null
+                    isLoading.value = false
                 }
 
                 is Result.Error -> {
                     error.value = "Error loading push"
+                    isLoading.value = false
                 }
 
                 else -> {
                     error.value = "Unexpected result"
-
+                    isLoading.value = false
                 }
             }
         }
@@ -48,22 +53,23 @@ class PushViewModel() : ViewModel() {
         val address = signer.getAddress().getOrThrow()
 
         userAddress.value = address
-
+        isLoading.value = true
         pushRepository.onInitializePush(signer) { result ->
             when (result) {
                 is Result.Success -> {
                     pushUser.value = result.data
-
+                    isLoading.value = false
                 }
 
                 is Result.Error -> {
-                    println("error occurred...")
                     error.value = "Error loading push"
-                    // Show error in UI
+                    isLoading.value = false
                 }
 
                 else -> {
-                    println("Unexpected result")
+                    isLoading.value = false
+                    error.value = "Unexpected result"
+
                 }
             }
         }

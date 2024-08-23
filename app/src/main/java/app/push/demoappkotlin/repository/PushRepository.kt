@@ -1,7 +1,9 @@
 package app.push.demoappkotlin.repository
 
 import push.kotlin.sdk.ENV
+import push.kotlin.sdk.PushAPI.Chat
 import push.kotlin.sdk.PushAPI.PushAPI
+import push.kotlin.sdk.PushChat
 import push.kotlin.sdk.Signer
 import java.util.concurrent.Executor
 
@@ -29,6 +31,17 @@ class PushRepository(private val executor: Executor) {
             } catch (e: Exception) {
                 val error = Result.Error<PushAPI>(e)
                 callback.onComplete(error);
+            }
+        }
+    }
+
+    fun loadChats(pushAPI: PushAPI, callback: RepositoryCallback<Array<PushChat.Feed>?>) {
+        executor.execute {
+            try {
+                val result = pushAPI.chat.list(type = Chat.ChatListType.CHATS);
+                callback.onComplete(Result.Success(result))
+            } catch (e: Exception) {
+                callback.onComplete(Result.Error(e))
             }
         }
     }
